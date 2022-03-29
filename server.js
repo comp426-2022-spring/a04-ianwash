@@ -31,7 +31,9 @@ var args = minimist(process.argv.slice(2), {
 
 const express = require('express');
 const app = express();
-const logdb = require("./database.js")
+const logdb = require("./database.js");
+const fs = require("fs");
+const morgan = require("morgan");
 
 const port = args.port || 5555;
 const server = app.listen(port, () => {
