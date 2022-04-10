@@ -10,21 +10,20 @@ const stmt = logdb.prepare(`
 
 let row = stmt.get();
 
-if (row === undefined) {
+if (row == undefined) {
     const sqlInit = `
         CREATE TABLE accessLog ( 
             id INTEGER PRIMARY KEY,
-            remoteaddr TEXT,
-            remoteuser TEXT,
-            time TEXT, 
-            method TEXT,
-            url TEXT,
-            protocol TEXT, 
-            httpversion TEXT, 
-            secure TEXT, 
-            status TEXT, 
-            referer TEXT, 
-            useragent TEXT);
+            remoteaddr VARCHAR,
+            remoteuser VARCHAR,
+            time VARCHAR, 
+            method VARCHAR,
+            url VARCHAR,
+            protocol VARCHAR, 
+            httpversion NUMERIC, 
+            status VARCHAR, 
+            referer VARCHAR, 
+            useragent CARCHAR);
     `;
     logdb.exec(sqlInit);
 } 
