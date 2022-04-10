@@ -55,9 +55,9 @@ if (args.debug) {
 }
 
 if (args.log) {
-    const write = fs.createWriteStream('access.log', { flags: 'a' })
+    const write = fs.createWriteStream('FILE', { flags: 'a' })
     // Set up the access logging middleware
-    app.use(morgan('combined', { stream: write }))
+    app.use(morgan('FORMAT', { stream: write }))
 }
 
 app.use((req, res, next) => {
