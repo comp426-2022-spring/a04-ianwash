@@ -8,9 +8,9 @@ const stmt = logdb.prepare(`
 
 let row = stmt.get();
 
-if (row == undefined) {
+if (row === undefined) {
     const sqlInit = `
-        CREATE TABLE accessLog ( 
+        CREATE TABLE accesslog ( 
             id INTEGER PRIMARY KEY,
             remoteaddr VARCHAR,
             remoteuser VARCHAR,
@@ -21,7 +21,7 @@ if (row == undefined) {
             httpversion NUMERIC, 
             status VARCHAR, 
             referer VARCHAR, 
-            useragent CARCHAR);
+            useragent VARCHAR);
     `;
     logdb.exec(sqlInit);
 } 
