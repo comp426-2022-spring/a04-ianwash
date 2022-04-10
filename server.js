@@ -4,7 +4,7 @@ const { exit } = require('process');
 var args = minimist(process.argv.slice(2), {
     integer: [ 'port' ],
     boolean: [ 'debug', 'log', 'help' ],
-    default: { help: false, port: 5555, debug: false, log: true },
+    default: { help: false, port: 5555, debug: true, log: true },
     '--': true,
   })
 
@@ -55,9 +55,9 @@ if (args.debug) {
 }
 
 if (args.log) {
-    const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
+    const write = fs.createWriteStream('access.log', { flags: 'a' })
     // Set up the access logging middleware
-    app.use(morgan('combined', { stream: WRITESTREAM }))
+    app.use(morgan('combined', { stream: write }))
 }
 
 app.use((req, res, next) => {
@@ -74,7 +74,7 @@ app.use((req, res, next) => {
         useragent: req.headers['user-agent']
     }
     const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    const info = stmt.run(data.remoteaddr, data.remoteuser, data.time, data.method, data.url, data.protocol, data.httpversion, data.status, data.referer, data.useragent);
+    const info = stmt.run(data.remoteaddr, data.remoteuser, data.time, data.method, data.url, data.protocol, data.httpversion, data.secure, data.status, data.referer, data.useragent);
     // res.status(200).json(info);
     next();
 });
@@ -101,8 +101,7 @@ app.get('/app/flip/call/:bet', (req, res) => {
 });
 
 app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND');
-    res.type('text/plain')
+    res.status(404).send('404 NOT FOUND')
 });
 
 
