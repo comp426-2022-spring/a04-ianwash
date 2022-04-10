@@ -1,16 +1,18 @@
+"use strict";
+
 const Database = require('better-sqlite3');
 
 const logdb = new Database('log.db');
 
 const stmt = logdb.prepare(`
-    SELECT name FROM sqlite_master WHERE type='table' and name='accesslog';`
+    SELECT name FROM sqlite_master WHERE type='table' and name='accessLog';`
     );
 
 let row = stmt.get();
 
-if (row === undefined) {
+if (row == undefined) {
     const sqlInit = `
-        CREATE TABLE accesslog ( 
+        CREATE TABLE accessLog ( 
             id INTEGER PRIMARY KEY,
             remoteaddr VARCHAR,
             remoteuser VARCHAR,
