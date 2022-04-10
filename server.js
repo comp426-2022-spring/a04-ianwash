@@ -32,8 +32,8 @@ var args = minimist(process.argv.slice(2), {
 const express = require('express');
 const app = express();
 const logdb = require("./database.js");
-const fs = require("fs");
-const morgan = require("morgan");
+const fs = require('fs');
+const morgan = require('morgan');
 
 const port = args.port || 5555;
 const server = app.listen(port, () => {
@@ -42,8 +42,12 @@ const server = app.listen(port, () => {
 
 if (args.debug) {
     app.get('/app/log/access', (req, res) => {
+      try {
         const stmt = logdb.prepare('SELECT * FROM accesslog').all()
         res.status(200).json(stmt)
+      } catch (e) {
+        console.error(e);
+      }
     });
     app.get('/app/error', (req, res) => {
         throw new Error('Error test successful.');
@@ -65,14 +69,14 @@ app.use((req, res, next) => {
         url: req.url,
         protocol: req.protocol,
         httpversion: req.httpVersion,
-        secure: req.secure,
         status: res.statusCode,
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
-    const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, secure, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     const info = stmt.run(data.remoteaddr, data.remoteuser, data.time, data.method, data.url, data.protocol, data.httpversion, data.secure, data.status, data.referer, data.useragent);
-    res.status(200).json(info);
+    // res.status(200).json(info);
+    next();
 });
 
 app.get('/app/', (req, res) => {
