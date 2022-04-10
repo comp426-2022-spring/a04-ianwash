@@ -42,7 +42,7 @@ const server = app.listen(port, () => {
 
 if (args.debug) {
     app.get('/app/log/access', (req, res) => {
-        const stmt = logdb.prepare('SELECT * FROM userinfo').all()
+        const stmt = logdb.prepare('SELECT * FROM accesslog').all()
         res.status(200).json(stmt)
     });
     app.get('/app/error', (req, res) => {
