@@ -55,9 +55,9 @@ if (args.debug) {
 }
 
 if (args.log) {
-    const write = fs.createWriteStream('FILE', { flags: 'a' })
+    const WRITESTREAM = fs.createWriteStream('access.log', { flags: 'a' })
     // Set up the access logging middleware
-    app.use(morgan('FORMAT', { stream: write }))
+    app.use(morgan('combined', { stream: WRITESTREAM }))
 }
 
 app.use((req, res, next) => {
@@ -101,7 +101,8 @@ app.get('/app/flip/call/:bet', (req, res) => {
 });
 
 app.use(function(req, res){
-    res.status(404).send('404 NOT FOUND')
+    res.status(404).send('404 NOT FOUND');
+    res.type('text/plain')
 });
 
 
