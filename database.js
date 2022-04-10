@@ -10,7 +10,8 @@ let row = stmt.get();
 
 if (row == undefined) {
     const sqlInit = `
-        CREATE TABLE accessLog ( 
+        CREATE TABLE accessLog (
+            id INTEGER PRIMARY KEY, 
             remoteaddr TEXT,
             remoteuser TEXT,
             time INTEGER, 
