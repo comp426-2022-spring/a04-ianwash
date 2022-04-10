@@ -1,5 +1,3 @@
-"use strict";
-
 const Database = require('better-sqlite3');
 
 const logdb = new Database('log.db');
@@ -13,19 +11,21 @@ let row = stmt.get();
 if (row == undefined) {
     const sqlInit = `
         CREATE TABLE accessLog ( 
-            id INTEGER PRIMARY KEY,
-            remoteaddr VARCHAR,
-            remoteuser VARCHAR,
-            time VARCHAR, 
-            method VARCHAR,
-            url VARCHAR,
-            protocol VARCHAR, 
-            httpversion NUMERIC, 
-            status VARCHAR, 
-            referer VARCHAR, 
-            useragent VARCHAR);
+            id INTEGER NOT NULL PRIMARY KEY,
+            remoteaddr TEXT,
+            remoteuser TEXT,
+            time INTEGER, 
+            method TEXT,
+            url TEXT,
+            protocol TEXT, 
+            httpversion TEXT, 
+            status INTEGER, 
+            referer TEXT, 
+            useragent TEXT);
     `;
     logdb.exec(sqlInit);
-} 
+} else {
+    console.log("Database already exists");
+}
 // Export all of the above as a module so that we can use it elsewhere.
 module.exports = logdb
